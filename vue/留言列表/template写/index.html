@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+    <style>
+        *{
+            font-size: 18px;
+        }
+        ul>li{
+            list-style: none;
+        }
+        label {
+            display: inline-block;
+            width: 30%;
+        }
+        .btn {
+            border:none;
+            outline:none;
+            cursor:pointer; 
+            width:100px;
+            height:50px;
+            border-radius:3px;
+            background-color:#3385ff;
+            color:#fff;
+        }
+        .msgContent {
+            padding:20px 0;
+            border-bottom: 1px solid #717f95;
+        }
+        .msgContent>button{
+            outline:none;
+            border:none;
+            font-size:14px;
+            border-radius:2px;
+            background-color:#3385ff;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <v-input :msg = "msg"></v-input>
+        <v-list :msg = "msg"></v-list>
+    </div>
+    <script>
+        Vue.component('v-itemList', {
+            template: `
+                <ul style="padding-left:100px;color:#b0bac1;">
+                    <li v-for="(item, index) in reMsg" :key="index" style="font-size:12px">{{item}}</li>
+                </ul>
+            `,
+            props: {
+                reMsg: {
+                    type:Array
+                }
+            }
+        })
+        Vue.component('v-list', {
+            template: `
+                <ul style="width:500px;padding-left:40px;">
+                    <li v-if="msg.length === 0" style="text-align: center;">
+                        暂无数据
+                    </li>
+                    <li v-for="(item, index) in msg" :key="index" v-else class="msgContent">
+                        <span style="color:#717f95;display:inline-block;width:20%;float:left;">{{item.name}}：</span>
+                        <div style="display:inline-block; width:78%;">{{item.content}}</div>
+                        <v-itemList :reMsg="item.reMsg"></v-itemList>
+                        <div style="width:90%;height:20px;display:inline-block;"></div>
+                        <button @click="resend(index)">回复</button>
+                    </li>
+
+                </ul>
+            `,
+            props: {
+                msg: {
+                    type: Array
+                }
+            },
+            methods: {
+                resend (index) {
+                    let reMsg = prompt("请输入您的回复：");
+                    if (!reMsg) return;
+                    this.msg[index].reMsg.push(reMsg);
+                }
+            }
+        })
+        Vue.component('v-input', {
+            template: `
+            <ul style="width:500px;margin-bottom:80px;">
+                <li style="padding:10px;">
+                    <label style="float: left;">昵称：</label>
+                    <input type="text" v-model="name" style="width:67%;height:15px;padding: 10px 5px;">
+                </li>
+                <li style="padding:10px;">
+                    <label style="float: left;">留言内容：</label>
+                    <textarea v-model="content" style="width:67%;height:60px;padding: 10px 5px"></textarea>
+                </li>
+                <li style="float:right;margin-right:10px;">
+                <button class='btn' @click="sendmsg">发布</button>
+                </li>
+            </ul>
+            `,
+            data: function () {
+                return {
+                    name: '',
+                    content: ''
+                }
+            },
+            props: {
+                msg: {
+                    type: Array
+                }
+            },
+            methods: {
+                sendmsg () {
+                    if (!this.name) return;
+                    if (!this.content) return;
+                    this.msg.push({
+                        name: this.name,
+                        content: this.content,
+                        reMsg: [
+                        ]
+                    })
+                    this.name = undefined;
+                    this.content = undefined;
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    msg: [
+                    
+                    ]
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <blog-post v-for="post in posts" @enlarge-text="abc"  :msg="post"></blog-post>
+    </div>
+    <script>
+        Vue.component('blog-post',{
+            props: {
+                msg: Object,
+            },
+            template: `\
+            <div class="blog-post">\
+                <h3>{{msg.title}}</h3>\
+                <button v-on:click="$emit('enlarge-text')">Enlarge text</button>\
+                <div v-html="msg.id"></div>\
+            </div>`
+        })
+        var app = new Vue({
+            el: '#app',
+            data:  {
+                posts: [
+                    {id:1, title: 'hello'},
+                    {id:2, title: 'world'},
+                    {id:3, title: 'javascript'},
+                ]
+            },
+            methods: {
+                abc () {
+                    alert(1)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

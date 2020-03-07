@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li style="width:100px;border:1px solid red;" 
+                v-for="(item,index) in walkingist" :key="index">
+                 <span>{{item.length}}</span>
+                 <marquee behavior="" direction="" scrollamount="3" v-if="item.length>10">
+                    {{item}}
+                </marquee>
+                 <span  v-if="item.length <= 10">{{item}}</span>
+             </li>
+        </ul>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    walkingist: [
+                        "上海市某某某",
+                        "卜蜂莲花保德店", 
+                        "上海市保德路88号. 上海, 上海,",
+                        "卜蜂莲花曹安店, 上海市曹安路1538号. 上海", 
+                        "上海, 卜蜂莲花川沙店, 上"
+                    ]
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .step1{
+            width:400px;
+            height:600px;
+            border: 1px solid #000;
+            position:relative;
+            padding: 20px;
+        }
+        .btn{
+            position: absolute;
+            bottom:20px;
+        }
+        button{
+            width:100px;
+            height:50px;
+            background-color: #1890ff;
+            color: #fff;
+            border-radius:3px;
+            font-size:20px;
+            border:0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" >
+        <div class="step1" v-show="data === 1">
+            <p>1.请问您的性别是：</p>
+            <div v-for="(item,index) in step1" :key=index>
+                <input type="radio" v-model="step1Checked" name="sex" :value="item.value">{{item.name}}
+            </div>
+            <div class="btn">
+                <button @click="nextStep">下一步</button>
+                <button @click='reset(1)'>重置</button>
+            </div>
+        </div>
+        <div class="step1" v-show="data === 2">
+            <p>2.请选择您的兴趣爱好：</p>
+            <div v-for="(item, index) in step2" :key=index>
+                <input type="checkbox" v-model="step2Checked" name="hobby" :value="item.value"/>{{item.name}}
+            </div>
+            <div class="btn">
+                <button @click="nextStep">下一步</button>
+                <button @click="lastStep">上一步</button>
+                <button @click="reset(2)">重置</button>
+            </div>
+        </div>
+        <div class="step1" v-show="data === 3">
+            <p>3.请介绍一下自己：</p>
+            <textarea placeholder="不少于100字" style="width:100%;height:200px;outline:none;" v-model="msg"></textarea>
+            <div class="btn">
+                <button @click='sendMsg'>提交</button>
+                <button @click="lastStep">上一步</button>
+                <button @click="reset(3)">重置</button>
+            </div>
+        </div>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data () {
+                return {
+                    data: 1,
+                    step1: [
+                        {value: 'male', name: '男'},
+                        {value: 'female', name: '女'},
+                        {value: 'secret', name: '保密'}
+                    ],
+                    step1Checked: [],
+                    step2: [
+                        {value: 'book', name: '看书'},
+                        {value: 'swimming', name: '游泳'},
+                        {value: 'running', name: '跑步'},
+                        {value: 'movie', name: '看电影'},
+                        {value: 'music', name: '听音乐'}
+                    ],
+                    step2Checked: [],
+                    msg: ''
+                }
+            },
+            methods: {
+                sendMsg () {
+                    if (this.msg.length < 100) {
+                        alert ('字数不可少于100字');
+                        return false;
+                    } else {
+                        alert('提交成功')
+                        console.log(this.step1Checked,this.step2Checked,this.msg)
+                    }
+                },
+                nextStep () {
+                    if(this.data === 1 && this.step1Checked.length === 0) {
+                        alert('请选择性别')
+                        return false;
+                    } else if (this.data === 2 && this.step2Checked.length === 0){
+                        alert('请选择爱好');
+                        return false;
+                    }else {
+                        this.data +=1;
+                    }
+                    
+                },
+                lastStep () {
+                    this.data -= 1;
+                },
+                reset (i) {
+                    var that = this;
+                    if ( i === 1) {
+                        that.step1Checked = [];
+                    } else if ( i === 2) {
+                        that.step2Checked = [];
+                    } else if (i === 3) {
+                        that.msg = '';
+                    }
+                } 
+            }
+        })
+    </script>
+</body>
+</html>

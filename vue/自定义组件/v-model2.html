@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <base-input v-on:focus.native="onFocus"></base-input>
+    </div>
+    <script>
+        Vue.component('base-input',{
+            //不希望组件的根元素继承特性
+            inheritAttrs:false,
+            props: ['label','value'],
+            computed:{ 
+                inputListeners: function () {
+                    var vm = this;
+                    return Object.assign({},
+                        //我们从父级添加所有的监听器
+                        this.$listeners,
+                        //然后添加自定义监听器，或者覆写一些监听器的行为
+                        {
+                            //这里确保组件配合v-model的工作
+                            input: function (event) {
+                                vm.$emit('input', event.target.value)
+                            }
+                        }
+                    )
+                }
+            },
+            template: `
+                <label>
+                    {{label}}
+                    <input v-bind="$attrs" :value="value" v-on="inputListeners">
+                </label>`
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+
+            }
+        })
+    </script>
+</body>
+</html>

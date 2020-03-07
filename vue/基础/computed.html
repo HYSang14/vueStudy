@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+        <table>
+            <thead>
+                <th>商品名称</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr v-for="list in package1">
+                    <td>{{list.name}}</td>
+                    <td>{{list.price}}</td>
+                    <td>{{list.count}}</td>
+                </tr>
+            
+                <tr  v-for="list in package2">
+                        <td>{{list.name}}</td>
+                        <td>{{list.price}}</td>
+                        <td>{{list.count}}</td>
+                </tr>
+            </tbody>
+        </table>
+        总价：{{prices}}
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                package1: [
+                    {
+                        name: 'iPhone 7',
+                        price: 7199,
+                        count: 2
+                    },
+                    {
+                        name: 'iPad',
+                        price: 2888,
+                        count: 1
+                    }
+                ],
+                package2: [
+                    {
+                        name: 'apple',
+                        price: 3,
+                        count: 5
+                    },
+                    {
+                        name: 'banana',
+                        price: 2,
+                        count: 10
+                    }
+                ]
+            },
+            computed: {
+                prices: function () {
+                    var prices = 0;
+                    for (var i = 0; i < this.package1.length; i++) {
+                        prices += this.package1[i].price*this.package1[i].count;
+                    }
+                    for(var i = 0; i < this.package2.length; i++ ) {
+                        prices += this.package2[i].price*this.package2[i].count;
+                    }
+                    return prices;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
