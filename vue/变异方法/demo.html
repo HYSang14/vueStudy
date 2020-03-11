@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span>
+                <input type="text" v-model="fname">
+                <button @click="add">添加</button>
+                <button @click="del">删除</button>
+                <button @click="change">替换</button>
+            </span>
+        </div>
+        <ul>
+            <li v-for="(item, index) in list" :key="index">{{item}}</li>
+        </ul>
+        <div>
+            <div>{{info.name}}</div>
+            <div>{{info.age}}</div>
+            <div>{{info.gender}}</div>
+        </div>
+    </div>
+    <script>
+        /*
+            变异方法（修改一原有数据）
+            push()  pop() shift() unshift() splice()  sort() reverse()
+            替换数组（生成新的数组）
+            filter()  concat()  slice() 需要赋值给原数组才能响应式
+        */
+        /*
+            数组响应式变化
+            Vue.set(vm.items, indexOfltem, newValue)
+            vm.$set(vm.items, indexOfltem, newValue)
+            要处理的数组名称  要处理的数组的索引  要处理的数组的值
+        */
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                fname: '',
+                list: ['apple','orange', 'banana'],
+                info: {
+                    name: 'list',
+                    age: 12
+                }
+            },
+            methods: {
+                add: function (){
+                    this.list.push(this.fname)
+                },
+                del: function () {
+                    this.list.pop()
+                },
+                change: function () {
+                   this.list = this.list.slice(0,2);
+                }
+            }
+        });
+        // vm.list[1]='lemon' 不是响应式的，无效
+        // Vue.set(vm.list, 1, 'lemon')
+        vm.$set(vm.list, 2, 'lemon')
+        vm.$set(vm.info, 'gender', 'female')
+    </script>
+</body>
+</html>

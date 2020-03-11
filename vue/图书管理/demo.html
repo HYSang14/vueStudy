@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <style>
+        td{
+            text-align: center;
+        }
+        table{
+            border-collapse:separate; 
+            border-spacing:0px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="grid">
+            <div>
+                <h1>图书管理</h1>
+                <div class="book">
+                    <div>
+                        <label for='id'>编号：</label>
+                        <input type="text" id="id" v-model="id" :disabled="flag" style="display:inline-block;">
+                        <label for="name">名称:</label>
+                        <input type="text" id="name" v-model="name">
+                        <button @click="handle">提交</button>
+                    </div>
+                </div>
+            </div>
+            <table>
+                <thead style="background:#ffa300">
+                    <tr>
+                        <th width="50px;">编号</th>
+                        <th width="200px">名称</th>
+                        <th width="100px">时间</th>
+                        <th width="200px">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in books" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <td>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
+                            <span>|</span>
+                            <a href="" @click.prevent="toDel(item.id)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data: {
+                id: '',
+                name: '',
+                flag: false,
+                books: [{
+                    id: 1,
+                    name: '三国演义',
+                    date: ''
+                },{
+                    id: 2,
+                    name: '水浒传',
+                    date: ''
+                },{
+                    id: 3,
+                    name: '红楼梦',
+                    date: ''
+                },{
+                    id: 4,
+                    name: '西游记',
+                    date: ''
+                }]
+            },
+            methods: {
+                handle: function (){
+                    if (this.flag) {
+                        this.books.some((item) => {
+                            if (item.id == this.id) {
+                                item.name = this.name;
+                                return true;
+                            }
+                        })
+                        this.flag = false;
+
+                    } else {
+                        var book = {};
+                        book.id = this.id;
+                        book.name = this.name;
+                        book.date = '';
+                        this.books.push(book);
+
+                    }
+                    this.id = ''
+                        this.name = ''
+                },
+                toEdit: function (id) {
+                    this.flag = true
+                    var book = this.books.filter(function (item) {
+                        return item.id == id
+                    });
+                    this.id = book[0].id;
+                    this.name = book[0].name;
+                },
+                toDel: function (id) {
+                    // 获取索引
+                    var index = this.books.findIndex(function (item) {
+                        return item.id == id;
+                    })
+                    this.books.splice(index, 1);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
