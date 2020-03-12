@@ -14,6 +14,12 @@
             border-collapse:separate; 
             border-spacing:0px 20px;
         }
+        .total{
+            width: 658px;
+            height: 30px;
+            line-height: 30px;
+            background: #fadbac;
+        }
     </style>
 </head>
 <body>
@@ -24,19 +30,23 @@
                 <div class="book">
                     <div>
                         <label for='id'>编号：</label>
-                        <input type="text" id="id" v-model="id" :disabled="flag" style="display:inline-block;">
+                        <input type="text" id="id" v-model="id" :disabled="flag" style="display:inline-block;" v-focus>
                         <label for="name">名称:</label>
                         <input type="text" id="name" v-model="name">
-                        <button @click="handle">提交</button>
+                        <button @click="handle" :disabled="submitFlag">提交</button>
                     </div>
                 </div>
+            </div>
+            <div class="total">
+                <span>总计：</span>
+                <span>{{total}}</span>
             </div>
             <table>
                 <thead style="background:#ffa300">
                     <tr>
                         <th width="50px;">编号</th>
                         <th width="200px">名称</th>
-                        <th width="100px">时间</th>
+                        <th width="200px">时间</th>
                         <th width="200px">操作</th>
                     </tr>
                 </thead>
@@ -44,7 +54,7 @@
                     <tr v-for="item in books" :key="item.id">
                         <td>{{item.id}}</td>
                         <td>{{item.name}}</td>
-                        <td>{{item.date}}</td>
+                        <td>{{item.date | format('yyyy-MM-dd hh:mm:ss')}}</td>
                         <td>
                             <a href="" @click.prevent="toEdit(item.id)">修改</a>
                             <span>|</span>
@@ -56,28 +66,73 @@
         </div>
     </div>
     <script>
+        Vue.directive('focus',{
+            inserted: function (el) {
+                el.focus();
+            }
+        })
+        Vue.filter('format', function (value, arg){
+            function dateFormat(date, format) {
+                if (typeof date === 'string') {
+                    var mts = date.match(/(\/Date\((\d+)\)\/)/)
+                    if (mts && mts.length >= 3) {
+                        date = parseInt(mts[2]);
+                    }
+                }
+                date = new Date(Number(date))
+                /*toUTCString() 根据世界时 (UTC) 把 Date 对象转换为字符串 */
+                if (!date|| date.toUTCString() == "Invalid Date") {
+                    return ""
+                }
+                var map = {
+                    'M': date.getMonth() + 1,
+                    "d": date.getDate(),
+                    "h": date.getHours(),
+                    "m": date.getMinutes(),
+                    "s": date.getSeconds(),
+                    "q": Math.floor((date.getMonth() + 3) / 3 ), // 季度
+                    "S": date.getMilliseconds() //毫秒
+                };
+                format = format.replace(/([yMdhmsqS])+/g, function (all, t) {
+                    var v = map[t];
+                    if (v !== undefined){
+                        if (all.length > 1) {
+                            v = '0' + v;
+                            v = v.substr(v.length - 2);
+                        }
+                        return v
+                    } else if (t === 'y'){
+                        return (date.getFullYear() + '').substr(4 - all.length)
+                    }
+                    return all
+                })
+                return format
+            }
+            return dateFormat(value, arg)
+        })
         var vm = new Vue({
             el:'#app',
             data: {
                 id: '',
                 name: '',
                 flag: false,
+                submitFlag:false,
                 books: [{
                     id: 1,
                     name: '三国演义',
-                    date: ''
+                    date: '2525609975000'
                 },{
                     id: 2,
                     name: '水浒传',
-                    date: ''
+                    date: '2525609975000'
                 },{
                     id: 3,
                     name: '红楼梦',
-                    date: ''
+                    date: '2525609975000'
                 },{
                     id: 4,
                     name: '西游记',
-                    date: ''
+                    date: '2525609975000'
                 }]
             },
             methods: {
@@ -116,6 +171,20 @@
                         return item.id == id;
                     })
                     this.books.splice(index, 1);
+                }
+            },
+            computed: {
+                total () {
+                    return this.books.length
+                }
+            },
+            watch: {
+                // 验证图书名称是否已经存在
+                name: function(val) {
+                    var flag = this.books.some(function (item) {
+                        return item.name  == val
+                    })
+                    this.submitFlag = flag ? true : false;
                 }
             }
         })
