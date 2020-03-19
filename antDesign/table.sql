@@ -1,0 +1,13 @@
+SET NAMES UTF8;
+DROP DATABASE IF EXISTS vuetest;
+CREATE DATABASE vuetest CHARSET=UTF8;
+USE vuetest;
+CREATE TABLE single(
+	id INT PRIMARY KEY,
+	name VARCHAR(32),
+	number VARCHAR(32),
+	email VARCHAR(32),
+	sex BOOLEAN,
+	passwrod VARCHAR(32)
+);
+INSERT INTO single VALUES(1,'大熊', '13234567890', '1748738308@qq.com', 0, '123123');

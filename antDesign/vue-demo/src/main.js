@@ -1,0 +1,22 @@
+import Vue from "vue"
+import App from './app.vue'
+import router from "./router/router.js"
+import axios from 'axios'
+import echarts from 'echarts'
+
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+Vue.config.productionTip = false;
+Vue.use(Antd)
+
+Vue.prototype.axios = axios
+Vue.prototype.$echarts = echarts
+
+
+const root = document.createElement('div')
+document.body.appendChild(root);
+
+new Vue({
+    router,
+    render: (h)=>h(App)
+}).$mount(root)

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <style>
+        .fade-enter-active, .fade-leave-active{
+            /* transition: opacity .5s */
+             transition: 20px 3.2s
+        }
+        .fade-enter, .fade-leave-active{
+            /* opacity: 0 */
+            height: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="show = !show">Toggle</button>
+        <transition name="fade">
+            <p v-if="show">hello</p>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                show: true
+            }
+        })
+    </script>
+</body>
+</html>
