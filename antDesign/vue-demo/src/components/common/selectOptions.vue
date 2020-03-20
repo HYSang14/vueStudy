@@ -29,7 +29,7 @@
       :class="tagClassName"
       @change="onChange"
       >
-      <a-select-option v-for="o of options" :key="o.key" :disabled="disabled" :value="o.key"> {{o.val}}</a-select-option>
+      <a-select-option v-for="o of options" :key="o.key" :disabled="disabled" :value="o.val"> {{o.val}}</a-select-option>
     </a-select>
   </a-form-item>
 </template>

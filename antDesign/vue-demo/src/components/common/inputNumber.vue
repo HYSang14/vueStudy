@@ -4,6 +4,7 @@
             v-decorator="[
                 this.fieldDecoratorId,
                 {
+                    initialValue: this.initialValue,
                     rules: [{
                         required: this.required,
                         message:  `This field can not be empty!`
@@ -38,16 +39,16 @@ export default {
         label: String, // label标签文本
         disabled: Boolean, // 是否禁用
         required: Boolean, // 是否必填
-        placeholde: String,
+        placeholder: String,
         step: {
             type: Number,
             default: 1
         },
-        min: {
+        min: { // 最小值
             type: Number,
             default: -9999999999
         },
-        max: {
+        max: { // 最大值
             type: Number,
             default: 9999999999
         },
@@ -64,6 +65,11 @@ export default {
     data (){
         return {
 
+        }
+    },
+    methods: {
+        changeEvent(e) {
+            this.$emit('numberChange', e)
         }
     }
 }

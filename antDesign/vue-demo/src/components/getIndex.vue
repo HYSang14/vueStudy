@@ -26,7 +26,7 @@
         fieldDecoratorId="confirmPassword"
         :max="20"
         matchMainPasswordKey="password"
-      />  
+      /> 
       <radio-group
         label="性别"
         fieldDecoratorId="sex"
@@ -72,6 +72,16 @@
         :options="checkboxItem"
         :defaultValue="checkInitialValue"
       />
+      <input-number
+        label="数字"
+        fieldDecoratorId="number"
+        :formItemLayout="formItemLayout"
+        :form="form"
+        :min="min"
+        required
+        :max="max"
+        :initialValue="defaultNumber"
+      />
     </a-form>
     <button @click="submit">submit</button>
   </div>
@@ -84,6 +94,7 @@ import SelectOptions from './common/selectOptions.vue';
 import SwitchItem from './common/switchItem.vue';
 import TreeSelect from './common/treeSelect.vue';
 import CheckboxGroup from './common/checkboxGroup.vue';
+import InputNumber from './common/inputNumber.vue';
 export default {
   components: {
     Input,
@@ -92,27 +103,28 @@ export default {
     SelectOptions,
     SwitchItem,
     TreeSelect,
-    CheckboxGroup
+    CheckboxGroup,
+    InputNumber
   },
   data: function() {
     return {
-      form: this.$form.createForm(this, { name: "coordinated" }),
-      formItemLayout: {
+      form: this.$form.createForm(this, { name: "coordinated" }), // 表单
+      formItemLayout: { // 布局
         labelCol: { span: 5 },
         wrapperCol: { span: 16 }
       },
-      defaultCheck: 1,
-      isSex: [
-        {"key": 1, "val": "male"},
-        {"key": 2, "val": "female"}
+      defaultCheck: 1, // 默认单选
+      isSex: [ // 单选数据
+        {key: 1, val: "male"},
+        {key: 2, val: "female"}
       ],
-      hobby: [
-        {"key": 1, "val": '吃鸡'},
-        {"key": 2, "val": 'lol'},
-        {"key": 3, "val": '明日之后'}
+      hobby: [ // 下拉选数据
+        {key: 1, val: '吃鸡'},
+        {key: 2, val: 'lol'},
+        {key: 3, val: '明日之后'}
       ],
-      defaultSelect: 1,
-      treeData: [{
+      defaultSelect: "吃鸡", // 下拉选默认值
+      treeData: [{  // 树状下拉选数据
         children: [{
           children: [],
           isLeaf: true,
@@ -149,12 +161,15 @@ export default {
         title:'全部分类',
         value: 0
       }],
-      checkboxItem: [
+      checkboxItem: [ // 复选数据
         {key: 1, val: '你好'},
         {key: 2, val: '我好'},
         {key: 3, val: '大家好'}
       ],
-      checkInitialValue: [1]
+      checkInitialValue: [1], // 复选默认值
+      min: -10, // 数字框最小值
+      max: 1000, // 数字框最大值
+      defaultNumber: 19, // 数字框默认值
     };
   },
   methods: {
