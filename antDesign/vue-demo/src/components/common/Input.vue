@@ -1,102 +1,68 @@
 <template>
-  <a-form-item
-    :label="label"
-
-    :extra="extra"
-    :class="formItemClassName"
-    :labelCol="formItemLayout && formItemLayout.labelCol"
-    :wrapperCol="formItemLayout && formItemLayout.wrapperCol"
-    >
-    <a-input 
-        :v-decorator="[
-      this.fieldDecoratorId,
-      {
-        rules: [{
-          required: this.required,
-          whitespace: false,
-          message: `请输入正确格式！` 
-        },{
-          max: this.max,
-          message:  `Please enter less ${this.max} characteries!`
-        },{
-          pattern: this.ignoreValidator ? '' : this.regExpression,
-          message: this.errorMsg || `Please enter correct type!`
-        }],
-        validateFirst: true,
-        validateTrigger: this.validateTrigger
-      }
-    ]"
-      :type="type" 
-      :key="fieldDecoratorId" 
+  <a-form-item v-bind="formItemLayout" :label="label" :extra="extra" :class="formItemClassName">
+    <a-input
+      v-decorator="[
+        this.fieldDecoratorId,
+        {
+          rules: [
+            {
+              max: this.max,
+              message: `Please enter less ${this.max} characteries`
+            },{
+              required:this.required,
+              message: `This field can not be empty`
+            },{
+              pattern: this.ignoreValidator ? '' : this.regExpression,
+              message: this.errorMsg || `Please enter the correct type!`
+              }
+            ],
+          validateFirst: true,
+          validateTrigger: this.validateTrigger
+        }
+      ]"
+      :type="type"
       :placeholder="holder"
-     autocomplete="off" 
-     :disabled="disabled" 
-     :class="tagClassName" 
-     @keydown.enter="keyEnter" 
-     @change="onChange"
-     @blur="blurEvent"
+      autocomplete="off"
+      :disabled="disabled"
+      :class="tagClassName"
     />
   </a-form-item>
 </template>
 <script>
+/**引用：
+ *<Input label="昵称" :formItemLayout="formItemLayout" type="text" required fieldDecoratorId="fieldDecoratorId" />
+ */
 export default {
   props: {
-    form: Object, // 表单对象
-    max: { // 文本输入最大值
+    max: {
       type: Number,
       default: 9999
     },
-    type: String, // input输入类型
     initialValue: String, // 默认值
-    extra: String, // 额外的提示信息
     label: String, // 标题
+    extra: String, //额外的提示信息
     disabled: Boolean, // 是否禁用
-    required: Boolean, // 是否必选
     errorMsg: String, // 正则失败信息
-    placeholder: String, 
-    regExpression: RegExp, // 正则校验
-    validateTrigger: { // 检验子节点值的时机
-      type: String,
-      default: 'blur'
-    },
+    placeholder: String,
+    regExpression: RegExp,
+    formItemLayout: Object, // 布局
+    fieldDecoratorId: String, // 字段
+    ignoreValidator:Boolean, // 是否取消验证
+    type: String,
     formItemClassName: String, // <a-form-item>类样式名
     tagClassName: String, // <a-form-item>内的标签类样式名
-    ignoreValidator: Boolean, // 是否跳过验证
-    formItemLayout: Object, // 布局
-    fieldDecoratorId: String // key字段
+    required: Boolean,
+    validateTrigger: {
+      type: String,
+      default: "blur"
+    }
   },
   data() {
     return {
       holder: this.placeholder || `Please enter content!`
-    }
-  },
-  mounted () {
-    console.log(this.fieldDecoratorId)
-    console.log(this.required)
-  },
-  watch: {
-    placeholder (val) {
-      this.removeCache()
-    },
-    max (val) {
-      this.removeCache()
-    }
-  },
-  methods: {
-    removeCache() {
-      this.holder = this.placeholder || `Please enter content!`
-    },
-    onChange (e) {
-      this.$emit('change', e.target.value)
-    },
-    keyEnter (e) {
-      this.$emit('keyEnter', e.target.value)
-    },
-    blurEvent (e) {
-      this.$emit('blur', e.target.value)
-    }
+    };
   }
 };
 </script>
-<style scoped>
+<style>
 </style>
