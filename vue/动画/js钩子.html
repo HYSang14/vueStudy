@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../vue.js"></script>
+  <style>
+    .fade-enter-active, .fade-leave-active{
+      transition: opacity 0.5s;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="toggle">toggle</button>
+    <transition name="fade" 
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @before-leave="beforeLeave"
+      @leave="leave">
+      <div v-show="show">
+        hello world!
+      </div>
+    </transition>
+  </div>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: function () {
+        return {
+          show: true
+        }
+      },
+      methods: {
+        toggle (){
+          this.show =! this.show;
+        },
+        //进入前,动画初始状态
+        beforeEnter(el) {
+          el.style.opacity = 0;
+        },
+        //动画结束状态
+        enter(el, done) {
+          el.style.opacity = 1;
+          // 监听动画结束事件，执行done，如果没有监听结束事件，上述确实会正常显示隐藏，但是div模块始终占据位置
+          el.addEventListener('transitionend', done)
+        },
+        // 离开前状态
+        beforeLeave (el) {
+          el.style.opacity = 1;
+        },
+        // 离开后状态
+        leave(el,done){
+          el.style.opacity = 0;
+          el.addEventListener('transitionend', done)
+        }
+      },
+    })
+    /*
+      动画钩子函数
+      before-enter:  动画开始前，设置初始状态
+      enter:  执行动画
+      after-enter:  动画结束，清理工作
+      enter-cancelled:  取消动画， 
+      before-leave:
+      leave:
+      after-leave:
+      leave-cancelled: 
+    */
+  </script>
+</body>
+
+</html>
