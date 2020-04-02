@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="vue.js"></script>
+  <style>
+    * {
+      font-size: 18px;
+    }
+
+    ul>li {
+      list-style: none;
+    }
+
+    label {
+      display: inline-block;
+      width: 30%;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100px;
+      height: 50px;
+      border-radius: 3px;
+      background-color: #3385ff;
+      color: #fff;
+    }
+
+    .msgContent {
+      padding: 20px 0;
+      border-bottom: 1px solid #717f95;
+    }
+
+    .msgContent>button {
+      outline: none;
+      border: none;
+      font-size: 14px;
+      border-radius: 2px;
+      background-color: #3385ff;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-input :msg="msg"></v-input>
+    <v-list :msg="msg"></v-list>
+  </div>
+  <script>
+    Vue.component('v-input', {
+      data: function () {
+        return {
+          name: '',
+          content: ''
+        }
+      },
+      props: {
+        msg: {
+          type: Array
+        }
+      },
+      render: function (h) {
+        var that = this;
+        const childrenNode = [];
+        const li1 = h('li', {
+          style: {
+            padding: '10px',
+          }
+        }, [
+          h('label', '昵称', {
+            style: {
+              float: 'left'
+            }
+          }),
+          h('input', {
+            attrs: {
+              type: 'text'
+            },
+            style: {
+              width: "67%",
+              height: '15px',
+              padding: '10px 5px',
+            },
+            domProps: {
+              value: that.name
+            },
+            on: {
+              input: function (e) {
+                that.name = e.target.value;
+              }
+            }
+          })
+        ])
+        childrenNode.push(li1)
+        const li2 = h('li', {
+          style: {
+            padding: '10px'
+          },
+        }, [
+          h('label', '留言内容', {
+            style: {
+              float: "left"
+            }
+          }),
+          h('textarea', {
+            style: {
+              width: '67%',
+              height: '60px',
+              padding: '10px 5px'
+            },
+            domProps: {
+              value: that.content
+            },
+            on: {
+              input: function (e) {
+                that.content = e.target.value;
+              }
+            }
+          })
+        ])
+        childrenNode.push(li2)
+        const li3 = h('li', {
+          style: {
+            float: 'right',
+            marginRight: '10px'
+          }
+        },
+          [
+            h('button', {
+              domProps: {
+                innerHTML: '发布'
+              },
+              attrs: {
+                class: 'btn',
+              },
+              on: {
+                click: function () {
+                  that.sendMsg()
+                }
+              }
+            })
+          ])
+        childrenNode.push(li3)
+        return h('ul', {
+          style: {
+            width: '500px',
+            marginBottom: '80px',
+          },
+        },
+          childrenNode
+        )
+      },
+      methods: {
+        sendMsg() {
+          if (!this.name) return;
+          if (!this.content) return;
+          this.msg.push({
+            name: this.name,
+            content: this.content,
+            reMsg: []
+          })
+          this.name = undefined;
+          this.content = undefined;
+        }
+      },
+    })
+    Vue.component('v-list', {
+      props: {
+        msg: {
+          type: Array
+        },
+      },
+      methods: {
+        resend(index) {
+          let reMsg = prompt('请输入您的回复:')
+          if (!reMsg) return;
+          console.log(this.msg)
+          console.log(index)
+          this.msg[index].reMsg.push(reMsg);
+        }
+      },
+      render: function (h) {
+        var that = this;
+        const childrenNode = []
+        if (!this.msg.length) {
+          var li = h('li', {
+            domProps: {
+              innerHTML: '暂无数据'
+            },
+            style: {
+              textAlign: 'center'
+            }
+          })
+          childrenNode.push(li)
+        } else {
+          console.log(this.msg)
+          for(var i=0; i < this.msg.length; i++) {
+            console.log(i)
+            var li = h('li', {
+              domProps: {
+                key: i,
+              },
+              attrs: {
+                class: 'msgContent',
+              },
+            }, [
+              h('span', {
+                style: {
+                  color: '#717f95',
+                  display: 'inline-block',
+                  width: '20%',
+                  float: 'left'
+                },
+                domProps: {
+                  innerHTML: this.msg[i].name
+                }
+              }),
+              h('div', {
+                style: {
+                  display: 'inline-block',
+                  width: '78%'
+                },
+                domProps: {
+                  innerHTML: this.msg[i].content
+                }
+              }),
+              h('v-itemList',{
+                props: {
+                    reMsg: this.msg[i].reMsg
+                  }
+              }),
+              h('div', {
+                style: {
+                  width: '90%',
+                  height: '20px',
+                  display: 'inline-block'
+                }
+              }),
+              h('button', {
+                domProps: {
+                  innerHTML: "回复",
+                  value: i
+                },
+                on: {
+                  click: function (e) {  
+                    console.log(e.target.value)
+                    that.resend(e.target.value)
+                  }
+                }
+              })
+            ])
+            childrenNode.push(li)
+          }
+        }
+        return h('ul', {
+          style: {
+            width: "500px",
+            paddingLeft: '40px'
+          }
+        },
+          childrenNode
+        )
+      }
+    })
+    Vue.component('v-itemList', {
+      props: {
+        reMsg: {
+          type: Array
+        }
+      },
+      render: function (h) {
+        const node = [];
+        this.reMsg.forEach(v => {
+          node.push(h('li',{
+            style: {
+              fontSize: '12px',
+            },
+            domProps: {
+              innerHTML: v
+            }
+          }))
+        });
+        return h('ul', {
+          style: {
+            paddingLeft: '100px',
+            color: '#b0bac1'
+          },
+        },node)
+      }
+    })
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          msg: []
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>
