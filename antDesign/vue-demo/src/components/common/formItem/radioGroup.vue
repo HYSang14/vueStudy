@@ -13,6 +13,9 @@
   </a-form-item>
 </template>
 <script>
+/**
+<radio-group label="性别" fieldDecoratorId="sex" :options="isSex" :initialValue="defaultCheck" :form="form" isButton:formItemLayout="formItemLayout"/>
+ */
 export default {
   props: {
     form: Object,

@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VRouter from "vue-router"
 import login from '../components/login.vue'
 import register from '../components/register.vue'
-import getIndex from "../components/getIndex.vue"
-import test from "../components/test.vue"
+import index from '../components/index.vue'
+import getForm from "../components/getForm.vue"
 Vue.use(VRouter)
 
 const router = new VRouter({
@@ -14,19 +14,19 @@ const router = new VRouter({
             component: login
         },
         {
-            path: '/index',
-            name: 'index',
-            component: getIndex
+            path: '/form',
+            name: 'form',
+            component: getForm
         },
         {
-            path: '/test',
-            name: 'test',
-            component: test
+            path: '/index',
+            name: 'index',
+            component: index
         }
     ]
 })
 router.beforeEach((to, from, next) => {
-    const nextRoute = ['register', 'index', "test" ]
+    const nextRoute = ['register', 'form', 'index']
     let isLogin = window.sessionStorage.getItem('isLogin');
     if (nextRoute.indexOf(to.name) >= 0){
         if (!isLogin) {

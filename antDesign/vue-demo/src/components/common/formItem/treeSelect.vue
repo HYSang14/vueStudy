@@ -32,6 +32,9 @@
   </a-form-item>
 </template>
 <script>
+/**
+ <tree-select label="树状选择" fieldDecoratorId="tree" :formItemLayout="formItemLayout":form="form" :treeData="treeData" checkable  checkStrictly dropdownMatchSelectWidth treeNodeFilterProp="title" allowClear/>
+ */
 export default {
   props: {
     label: String,

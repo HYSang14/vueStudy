@@ -31,6 +31,10 @@
   </a-form-item>
 </template>
 <script>
+/*
+<password-input :form="form" label="密码" :formItemLayout="formItemLayout" required :max="20" fieldDecoratorId="password" placeholder="Please enter your password"/>
+<password-input :form="form" placeholder="Please make sure your password" label="确认密码" :formItemLayout="formItemLayout" required fieldDecoratorId="confirmPassword" :max="20" matchMainPasswordKey="password"/> 
+*/
 export default {
   props: {
     form: Object, // 表单对象

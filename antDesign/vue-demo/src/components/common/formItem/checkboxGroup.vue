@@ -12,6 +12,9 @@
   </a-form-item>
 </template>
 <script>
+/**
+ <checkbox-group label="复选" fieldDecoratorId="checkbox":formItemLayout="formItemLayout" :form="form" :options="checkboxItem":defaultValue="checkInitialValue" />
+ */
 export default {
   props: {
     form: Object,

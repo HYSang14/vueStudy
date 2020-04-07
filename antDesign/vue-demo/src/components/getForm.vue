@@ -87,14 +87,14 @@
   </div>
 </template>
 <script>
-import Input from "./common/Input.vue";
-import PasswordInput from './common/passwordInput.vue';
-import RadioGroup from './common/radioGroup.vue';
-import SelectOptions from './common/selectOptions.vue';
-import SwitchItem from './common/switchItem.vue';
-import TreeSelect from './common/treeSelect.vue';
-import CheckboxGroup from './common/checkboxGroup.vue';
-import InputNumber from './common/inputNumber.vue';
+import Input from "./common/formItem/Input.vue";
+import PasswordInput from './common/formItem/passwordInput.vue';
+import RadioGroup from './common/formItem/radioGroup.vue';
+import SelectOptions from './common/formItem/selectOptions.vue';
+import SwitchItem from './common/formItem/switchItem.vue';
+import TreeSelect from './common/formItem/treeSelect.vue';
+import CheckboxGroup from './common/formItem/checkboxGroup.vue';
+import InputNumber from './common/formItem/inputNumber.vue';
 export default {
   components: {
     Input,

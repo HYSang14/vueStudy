@@ -30,6 +30,9 @@
     </a-form-item>
 </template>
 <script>
+/*
+      <input-number  label="数字" fieldDecoratorId="number" :formItemLayout="formItemLayout" :form="form" :min="min" required :max="max" :initialValue="defaultNumber"/>
+*/
 export default {
     props: {
         formatter: Function, // 指定输入框展示值的格式

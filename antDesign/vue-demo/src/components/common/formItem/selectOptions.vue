@@ -34,6 +34,9 @@
   </a-form-item>
 </template>
 <script>
+/**
+ <select-options label="爱好" mode="multiple" required fieldDecoratorId="hobby" :options="hobby" :form="form" :initialValue="defaultSelect" :formItemLayout="formItemLayout"/>
+ */
 export default {
   props: {
     form: Object,

@@ -15,6 +15,9 @@
   </a-form-item>
 </template>
 <script>
+/**
+<switch-item label="是否开启" fieldDecoratorId="isOpen" :formItemLayout="formItemLayout" :form="form"/>
+ */
 export default {
   props: {
     label: String,
