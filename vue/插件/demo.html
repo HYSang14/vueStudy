@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="./plugin/index.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-html="msg"></p>
+        <p v-upper-text="msg"></p>
+        <p>{{msg | toLowerCase}}</p>
+        <p>{{content}}</p>
+    </div>
+    <!-- vue的插件其实通过Vue这个对象，为Vue或者它的原型链上添加新的属性。或者调用Vue的api完成其他事情，例如添加自定义指令或者过滤器。 -->
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                msg: 'Good Life',
+                content: 'default'
+            },
+            mounted () {
+                this.$getMsg(res => {
+                    this.content = res;
+                })
+            },
+            updated () {
+                Vue.myGlobalMethods()
+            }
+            
+        })
+    </script>
+</body>
+</html>

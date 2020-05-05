@@ -12,7 +12,10 @@ Vue.use(Antd)
 Vue.prototype.axios = axios
 Vue.prototype.$echarts = echarts
 
+// 引用插件
 
+import myPlugin from './assets/plugin/myPlugin.js';
+Vue.use(myPlugin)
 const root = document.createElement('div')
 document.body.appendChild(root);
 
